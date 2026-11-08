@@ -5,7 +5,10 @@
 @section('contenu')
     <div class="entete-page">
         <h1>{{ $titrePage ?? 'Contenus multimédias' }}</h1>
-        <a href="{{ route('contenus.create') }}" class="btn">+ Nouvelle publication</a>
+
+        @auth
+            <a href="{{ route('contenus.create') }}" class="btn">+ Nouvelle publication</a>
+        @endauth
     </div>
 
     @if ($categories->isNotEmpty())
@@ -37,15 +40,20 @@
 
                     <div class="actions">
                         <a href="{{ route('contenus.show', $publication) }}" class="btn btn-petit">Lire</a>
-                        <a href="{{ route('contenus.edit', $publication) }}" class="btn btn-petit btn-secondaire">Modifier</a>
 
-                        <form method="POST" action="{{ route('contenus.destroy', $publication) }}"
-                              onsubmit="return confirm('Supprimer cette publication ?');"
-                              style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-petit btn-danger">Suppr.</button>
-                        </form>
+                        @can('update', $publication)
+                            <a href="{{ route('contenus.edit', $publication) }}" class="btn btn-petit btn-secondaire">Modifier</a>
+                        @endcan
+
+                        @can('delete', $publication)
+                            <form method="POST" action="{{ route('contenus.destroy', $publication) }}"
+                                  onsubmit="return confirm('Supprimer cette publication ?');"
+                                  style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-petit btn-danger">Suppr.</button>
+                            </form>
+                        @endcan
                     </div>
                 </x-carte>
             @endforeach

@@ -7,14 +7,19 @@
         <div class="entete-page">
             <h1>{{ $publication->titre }}</h1>
             <div class="actions">
-                <a href="{{ route('contenus.edit', $publication) }}" class="btn btn-petit btn-secondaire">Modifier</a>
-                <form method="POST" action="{{ route('contenus.destroy', $publication) }}"
-                      onsubmit="return confirm('Supprimer cette publication ?');"
-                      style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-petit btn-danger">Supprimer</button>
-                </form>
+                @can('update', $publication)
+                    <a href="{{ route('contenus.edit', $publication) }}" class="btn btn-petit btn-secondaire">Modifier</a>
+                @endcan
+
+                @can('delete', $publication)
+                    <form method="POST" action="{{ route('contenus.destroy', $publication) }}"
+                          onsubmit="return confirm('Supprimer cette publication ?');"
+                          style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-petit btn-danger">Supprimer</button>
+                    </form>
+                @endcan
             </div>
         </div>
 

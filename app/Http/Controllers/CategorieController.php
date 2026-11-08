@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategorieRequest;
 use App\Http\Requests\UpdateCategorieRequest;
 use App\Models\Categorie;
+use Illuminate\Support\Facades\Gate;
 
 class CategorieController extends Controller
 {
@@ -17,11 +18,15 @@ class CategorieController extends Controller
 
     public function create()
     {
+        Gate::authorize('gerer-categories');
+
         return view('categories.create');
     }
 
     public function store(StoreCategorieRequest $request)
     {
+        Gate::authorize('gerer-categories');
+
         Categorie::create($request->validated());
 
         return redirect()
@@ -45,11 +50,15 @@ class CategorieController extends Controller
 
     public function edit(Categorie $categorie)
     {
+        Gate::authorize('gerer-categories');
+
         return view('categories.edit', compact('categorie'));
     }
 
     public function update(UpdateCategorieRequest $request, Categorie $categorie)
     {
+        Gate::authorize('gerer-categories');
+
         $categorie->update($request->validated());
 
         return redirect()
@@ -59,6 +68,8 @@ class CategorieController extends Controller
 
     public function destroy(Categorie $categorie)
     {
+        Gate::authorize('gerer-categories');
+
         try {
             $categorie->delete();
             return redirect()

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePublicationRequest;
 use App\Models\Categorie;
 use App\Models\Publication;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class ContenuController extends Controller
@@ -25,6 +26,8 @@ class ContenuController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Publication::class);
+
         $categories = Categorie::orderBy('nom')->get();
 
         return view('contenus.create', compact('categories'));
@@ -32,24 +35,23 @@ class ContenuController extends Controller
 
     public function store(StorePublicationRequest $request)
     {
+        Gate::authorize('create', Publication::class);
+
         $donnees = $request->validated();
 
-        // Upload image
         if ($request->hasFile('image')) {
             $donnees['image'] = $request->file('image')->store('publications', 'public');
         }
 
-        // Upload média (audio/vidéo)
         if ($request->hasFile('fichier_media')) {
             $fichier = $request->file('fichier_media');
             $donnees['fichier_media'] = $fichier->store('medias', 'public');
             $donnees['type_media'] = str_starts_with($fichier->getMimeType(), 'audio') ? 'audio' : 'video';
         }
 
-        // Auteur = utilisateur connecté (fallback id 1 pour tests sans auth)
-        /** @var \App\Models\User|null $user */
+        /** @var \App\Models\User $user */
         $user = Auth::user();
-        $donnees['user_id'] = $user?->id ?? 1;
+        $donnees['user_id'] = $user->id;
 
         $publication = Publication::create($donnees);
 
@@ -67,6 +69,8 @@ class ContenuController extends Controller
 
     public function edit(Publication $publication)
     {
+        Gate::authorize('update', $publication);
+
         $categories = Categorie::orderBy('nom')->get();
 
         return view('contenus.edit', compact('publication', 'categories'));
@@ -74,6 +78,8 @@ class ContenuController extends Controller
 
     public function update(UpdatePublicationRequest $request, Publication $publication)
     {
+        Gate::authorize('update', $publication);
+
         $donnees = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -101,6 +107,8 @@ class ContenuController extends Controller
 
     public function destroy(Publication $publication)
     {
+        Gate::authorize('delete', $publication);
+
         if ($publication->image) {
             Storage::disk('public')->delete($publication->image);
         }

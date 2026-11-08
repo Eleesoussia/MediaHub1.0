@@ -5,7 +5,10 @@
 @section('contenu')
     <div class="entete-page">
         <h1>Catégories</h1>
-        <a href="{{ route('categories.create') }}" class="btn">+ Nouvelle catégorie</a>
+
+        @can('gerer-categories')
+            <a href="{{ route('categories.create') }}" class="btn">+ Nouvelle catégorie</a>
+        @endcan
     </div>
 
     @if ($categories->isEmpty())
@@ -19,15 +22,18 @@
                 >
                     <div class="actions">
                         <a href="{{ route('categories.show', $categorie) }}" class="btn btn-petit">Voir</a>
-                        <a href="{{ route('categories.edit', $categorie) }}" class="btn btn-petit btn-secondaire">Modifier</a>
 
-                        <form method="POST" action="{{ route('categories.destroy', $categorie) }}"
-                              onsubmit="return confirm('Supprimer cette catégorie ?');"
-                              style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-petit btn-danger">Supprimer</button>
-                        </form>
+                        @can('gerer-categories')
+                            <a href="{{ route('categories.edit', $categorie) }}" class="btn btn-petit btn-secondaire">Modifier</a>
+
+                            <form method="POST" action="{{ route('categories.destroy', $categorie) }}"
+                                  onsubmit="return confirm('Supprimer cette catégorie ?');"
+                                  style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-petit btn-danger">Supprimer</button>
+                            </form>
+                        @endcan
                     </div>
                 </x-carte>
             @endforeach

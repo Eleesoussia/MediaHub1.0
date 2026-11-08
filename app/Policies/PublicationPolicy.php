@@ -4,63 +4,69 @@ namespace App\Policies;
 
 use App\Models\Publication;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class PublicationPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Détermine si l'utilisateur peut voir la liste des publications.
+     * → Toujours vrai (les publications sont publiques).
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Détermine si l'utilisateur peut voir une publication.
+     * → Toujours vrai (les publications sont publiques).
      */
     public function view(User $user, Publication $publication): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Determine whether the user can create models.
+     * Détermine si l'utilisateur peut créer une publication.
+     * → Tout utilisateur connecté peut créer.
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Détermine si l'utilisateur peut modifier une publication.
+     * → Propriétaire OU admin.
      */
     public function update(User $user, Publication $publication): bool
     {
-        return false;
+        return $user->id === $publication->user_id || $user->role === 'admin';
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Détermine si l'utilisateur peut supprimer une publication.
+     * → Même règle que update.
      */
     public function delete(User $user, Publication $publication): bool
     {
-        return false;
+        return $this->update($user, $publication);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Détermine si l'utilisateur peut restaurer (soft delete).
+     * → Admin uniquement (TP11).
      */
     public function restore(User $user, Publication $publication): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Détermine si l'utilisateur peut supprimer définitivement.
+     * → Admin uniquement (TP11).
      */
     public function forceDelete(User $user, Publication $publication): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 }
