@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    /** @use HasFactory<\Database\Factories\TagFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'nom',
+        'slug',
+    ];
+
+    // === RELATIONS ===
+
+    /** Un tag concerne plusieurs publications */
+    public function publications()
+    {
+        return $this->belongsToMany(Publication::class);
+    }
 }

@@ -6,23 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('publications', function (Blueprint $table) {
-            //
+            $table->string('image')->nullable();
+            $table->string('fichier_media')->nullable();
+            $table->string('type_media')->nullable();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('publications', function (Blueprint $table) {
-            //
+            $table->dropColumn(['image', 'fichier_media', 'type_media']);
         });
     }
 };

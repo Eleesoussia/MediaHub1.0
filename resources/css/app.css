@@ -8,4 +8,83 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* === Alertes erreur === */
+.alerte-erreur {
+    background: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+/* === En-tête de page === */
+.entete-page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* === Bouton danger === */
+.btn-danger { background: #dc2626; }
+.btn-danger:hover { background: #b91c1c; }
+
+/* === Bouton secondaire === */
+.btn-secondaire { background: #6b7280; }
+.btn-secondaire:hover { background: #4b5563; }
+
+/* === Actions dans une carte === */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+}
+
+/* === Formulaire === */
+.formulaire {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.form-groupe {
+    margin-bottom: 1.25rem;
+}
+
+.form-groupe label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #1e3a8a;
+}
+
+.form-groupe input,
+.form-groupe textarea,
+.form-groupe select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.form-groupe input:focus,
+.form-groupe textarea:focus,
+.form-groupe select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.erreur-champ {
+    color: #dc2626;
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 0.25rem;
+}
 }
