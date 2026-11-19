@@ -6,7 +6,7 @@
 
 ---
 
-## 🔐 Authentification
+## Authentification
 
 ### 1. Connexion
 
